@@ -1,4 +1,7 @@
 
+app:
+  baseUri: APP_BASE_URI
+
 server:
   port: PORT
 
