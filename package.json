@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "ava",
+    "test": "nyc ava",
+    "coverage-html": "nyc report --reporter=html",
+    "coverage-coveralls": "nyc report --reporter=text-lcov | coveralls",
     "docker-test": "bin/test.sh"
   },
   "author": "Shaun",
@@ -30,6 +32,8 @@
     "x-www-form-urlencode": "0.1.1"
   },
   "devDependencies": {
-    "ava": "^0.17.0"
+    "ava": "0.17.0",
+    "coveralls": "2.11.15",
+    "nyc": "10.1.2"
   }
 }
