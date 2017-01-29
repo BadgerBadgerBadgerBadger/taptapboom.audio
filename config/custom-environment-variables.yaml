@@ -19,3 +19,6 @@ slack:
   verificationToken: SLACK_VERIFICATION_TOKEN
   oAuthState: SLACK_OAUTH_STATE
   redirectUri: SLACK_REDIRECT_URI
+
+redis:
+  host: REDIS_HOST
