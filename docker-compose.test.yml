@@ -1,0 +1,10 @@
+taptapboom:
+  build: .
+  env_file:
+    - bin/test.env
+  links:
+    - redis
+  working_dir: /usr/src/app
+  command: bash -c "npm test"
+redis:
+  image: redis:3.2
