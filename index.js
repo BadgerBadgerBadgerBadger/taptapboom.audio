@@ -2,14 +2,14 @@
 
 const co = require('bluebird').coroutine
 
-const Redis = require('src/db/redis')
-const Spotify = require('src/spotify/app')
+const MongoDb = require('src/db/mongo')
+const RedisDb = require('src/db/redis')
 const Server = require('src/server')
 
 co(function* () {
 
-  yield Redis.init()
-  yield Spotify.init()
+  yield MongoDb.init()
+  yield RedisDb.init()
   Server.init()
 })()
 

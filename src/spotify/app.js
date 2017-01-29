@@ -2,46 +2,33 @@
 
 const co = require('bluebird').coroutine
 const config = require('config')
-const debug = require('debug')('spotify-app')
+const debug = require('debug')('taptapboom:spotify-app')
 
 const Constants = require('src/constants')
 const Redis = require('src/db/redis')
 const Logger = require('src/util/logger')
-const spotifyClient = require('src/spotify/client')
+const SlackTeam = require('src/storage/slackTeam')
 
-function init() {
-  return co(function* () {
-
-    const refreshTokenFromStorage = yield Redis.client.getAsync(Constants.STORAGE_KEY.SPOTIFY.REFRESH_TOKEN)
-
-    if (refreshTokenFromStorage) {
-
-      debug(`Retrieved refresh token from storage.`)
-      spotifyClient.setRefreshToken(refreshTokenFromStorage)
-
-      yield refreshTokens()
-    }
-  })()
-}
+const SpotifyClient = require('src/spotify/client')
 
 function refreshTokens() {
   return co(function* () {
 
     debug(`Refreshing tokens.`)
-    const data = yield spotifyClient.refreshAccessToken()
+    const data = yield SpotifyClient.refreshAccessToken()
     debug(`Refreshed tokens: ${JSON.stringify(data)}`)
-    spotifyClient.setAccessToken(data.body['access_token'])
+    SpotifyClient.setAccessToken(data.body['access_token'])
 
     if (data['refresh_token']) {
       debug(`New refresh token received.`)
-      spotifyClient.setRefreshToken(data.body['refresh_token'])
+      SpotifyClient.setRefreshToken(data.body['refresh_token'])
       yield Redis.client.setAsync(Constants.STORAGE_KEY.SPOTIFY.REFRESH_TOKEN, data.body['refresh_token'])
     }
   })()
 }
 
-function search(queryString) {
-  return spotifyClient.searchTracks(queryString)
+function _search(queryString) {
+  return SpotifyClient.singleton.searchTracks(queryString)
     .then(r => {
 
       debug(JSON.stringify(r, null, 2))
@@ -64,14 +51,14 @@ function search(queryString) {
     })
 }
 
-function addTrackToTargetPlaylist(trackId) {
+function _addTrackToTargetPlaylist(trackId) {
 
   debug(`Making request.`, `playlistUser: ${config.get('spotify.playlistUser')}`, 
     `playlistId: ${config.get('spotify.targetPlaylist')}`, 
     `trackId: ${trackId}`
   )
 
-  return spotifyClient.addTracksToPlaylist(
+  return SpotifyClient.addTracksToPlaylist(
     config.get('spotify.playlistUser'),
     config.get('spotify.targetPlaylist'),
     `spotify:track:${trackId}`
@@ -86,18 +73,61 @@ function addTrackToTargetPlaylist(trackId) {
     })
 }
 
-function getTrackFromId(trackId) {
+function _getTrackFromId(trackId) {
   return co(function* () {
-    const response = yield spotifyClient.getTracks([trackId])
+    const response = yield SpotifyClient.singleton.getTracks([trackId])
     return response.body.tracks[0]
   })()
 }
 
-module.exports = {
-  init,
-  refreshTokens,
-  client: spotifyClient,
-  search,
-  addTrackToTargetPlaylist,
-  getTrackFromId
+class Spotify {
+
+  constructor(spotifyUserId) {
+    this.id = spotifyUserId
+    this.storage = new SpotifyStorage(spotifyUserId)
+  }
+
+  static createAuthorizeURL(state) {
+
+    const scopes = ['playlist-modify-public', 'playlist-modify-private']
+    state = state || Date.now()
+
+    return SpotifyClient.singleton.createAuthorizeURL(scopes, state)
+  }
+
+  static authorizationCodeGrant() {
+    return SpotifyClient.singleton.authorizationCodeGrant(...arguments)
+  }
+
+  static getUserDataFromAccessToken(accessToken) {
+    return co(function* () {
+
+      const client = SpotifyClient.new()
+      client.setAccessToken(accessToken)
+
+      const response = yield client.getMe()
+
+      if (response.statusCode >= 200 && response.statusCode < 400) {
+        return response.body
+      }
+    })()
+  }
+
+  static addTrackToTargetPlaylist(spotifyUserId, trackId) {
+    return co(function* () {
+
+      
+
+    })()
+  }
+
+  static getTrackFromId(trackId) {
+    return _getTrackFromId(trackId)
+  }
+
+  static search(queryString) {
+    return _search(queryString)
+  }
 }
+
+module.exports = Spotify

@@ -16,3 +16,8 @@ slack:
   verificationToken: SLACK_VERIFICATION_TOKEN
   oAuthState: SLACK_OAUTH_STATE
   redirectUri: SLACK_REDIRECT_URI
+
+mongo:
+  host: MONGO_HOST
+  port: MONGO_PORT
+  db: MONGO_DB

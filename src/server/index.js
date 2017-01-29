@@ -39,6 +39,21 @@ app.use('/api/auth', AuthorizationRouter)
 app.use('/api/admin', AdminRouter)
 app.use('/api/slack', SlackRouter)
 
+app.use((err, req, res, next) => {
+  Logger.error({
+    req: {
+      url: req.originalUrl,
+      method: req.method,
+      params: req.params,
+      query: req.query
+    },
+    err: err,
+    stack: err.stack
+  })
+
+  res.send(err)
+})
+
 const port = config.get('server.port')
 
 function init() {

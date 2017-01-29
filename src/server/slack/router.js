@@ -1,6 +1,6 @@
 'use strict'
 
-const debug = require('debug')('controller-slack')
+const debug = require('debug')('taptapboom:controller:slack')
 const express = require('express')
 const _ = require('lodash')
 const request = require('request-promise')
@@ -11,6 +11,8 @@ const Constants = require('src/constants')
 const Controller = require('src/server/slack/controller')
 const Spotify = require('src/spotify/app')
 const Serializer =  require('src/server/slack/serializer')
+const SlackTeam = require('src/storage/slackTeam')
+const SpotifyUser = require('src/storage/spotifyUser')
 
 const router = express.Router({ mergeParams: true })
 
@@ -19,9 +21,26 @@ router.use(Controller.authorizeSlack)
 router.post('/command', (req, res) => {
   return co(function* () {
 
-    const text = _.get(req, 'body.text')
+    debug(`Command body received: ${JSON.stringify(req.body)}`)
+    const body = _.get(req, 'body')
 
-    const tokens = text.split(' ')
+    const slackTeam = new SlackTeam(body.team_id)
+    yield slackTeam.fetch()
+    debug(`Team data fetched: ${slackTeam.toJSON()}`)
+
+    const spotifyUserId = slackTeam.get('spotify.user')
+
+    if (!spotifyUserId) {
+
+      const teamName = slackTeam.get('teamName')
+      const authorizationUri = Spotify.createAuthorizeURL(slackTeam.getId())
+
+      return res.json({ 
+        text: Constants.MESSAGING.SLACK.getSpotifyAccountNotYetAdded(teamName, authorizationUri)
+      })
+    }
+
+    const tokens = body.text.split(' ')
     const command = tokens.shift()
     const query = tokens.join(' ')
 
@@ -38,7 +57,7 @@ router.post('/command', (req, res) => {
         return _searchMusicFromSpotify(req.body, query, res)
 
       case 'nowplaying':
-        return res.send('l')
+        return res.json('l')
 
       default:
         return res.json({ text: `We don't support that yet.` })
@@ -54,7 +73,26 @@ router.post('/interactive', (req, res) => {
     switch (callbackId) {
       case Constants.SLACK.INTERACTIVE.SONG_SEARCH.CALLBACK_ID:
 
-        debug(`CallbackId received: ${Constants.SLACK.INTERACTIVE.SONG_SEARCH.CALLBACK_ID}`)
+        debug(`CallbackId received: ${Constants.SLACK.INTERACTIVE.SONG_SEARCH.CALLBACK_ID}, `+
+          `with data: ${JSON.stringify(req.body)}`)
+
+        const teamId = req.body.team.id
+        const slackTeam = new SlackTeam(teamId)
+        yield slackTeam.fetch()
+
+        const spotifyUserId = slackTeam.get('spotify.user')
+
+        if (!spotifyUserId) {
+
+          const teamName = slackTeam.get('teamName')
+          const authorizationUri = Spotify.createAuthorizeURL(slackTeam.getId())
+
+          return res.json({
+            text: Constants.MESSAGING.SLACK.getSpotifyAccountNotYetAdded(teamName, authorizationUri)
+          })
+        }
+
+        res.json({ text: Constants.MESSAGING.WAIT_FOR_IT })
 
         const action = _.get(req, 'body.actions')[0]
         debug(`Action received: ${JSON.stringify(action)}`)
@@ -62,9 +100,7 @@ router.post('/interactive', (req, res) => {
         const track = yield Spotify.getTrackFromId(trackId)
         const trackName = track.name
 
-        res.send({ text: Constants.MESSAGING.WAIT_FOR_IT })
-
-        const result = yield Spotify.addTrackToTargetPlaylist(trackId)
+        const result = yield Spotify.addTrackToTargetPlaylist(spotifyUserId, trackId)
 
         if (result.status !== Constants.RESULT.STATUS.SUCCESS) {
           return { text: Constants.MESSAGING.UH_OH }

@@ -5,6 +5,13 @@ module.exports = {
     UH_OH: `Uh-oh! Looks like we broke something 😅`, // :sweat_smile: emoji
     WAIT_FOR_IT: `Wait for it...`,
 
+    SLACK: {
+      getSpotifyAccountNotYetAdded: (teamName, authorizationUrl) => {
+        return `Dammit! Looks like a Spotify account hasn't been connected for ${teamName}. ` +
+            `Let's fix that. Click <${authorizationUrl}|here> to connect your Spotify account.`
+      }
+    },
+
     SPOTIFY: {
       getSONG_SUCCESSFULLY_ADDED: (trackName) => {
         return `*${trackName}* has been added to the playlist! 🙌` // :hooray: emoji
