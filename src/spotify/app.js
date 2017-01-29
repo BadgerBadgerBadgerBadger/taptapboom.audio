@@ -11,16 +11,16 @@ const spotifyClient = require('src/spotify/client')
 
 function init() {
   return co(function* () {
-    
+
     const refreshTokenFromStorage = yield Redis.client.getAsync(Constants.STORAGE_KEY.SPOTIFY.REFRESH_TOKEN)
 
     if (refreshTokenFromStorage) {
 
       debug(`Retrieved refresh token from storage.`)
       spotifyClient.setRefreshToken(refreshTokenFromStorage)
-    }
 
-    yield refreshTokens()
+      yield refreshTokens()
+    }
   })()
 }
 

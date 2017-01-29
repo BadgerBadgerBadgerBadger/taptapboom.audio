@@ -25,7 +25,13 @@ app.set('views', __dirname + '/public')
 
 app.get('/', (req, res) => {
   res.render('index.html', {
-    baseUri: config.get('app.baseUri')
+    app: {
+      baseUri: config.get('app.baseUri')
+    },
+    slack: {
+      clientId: config.get('slack.clientId'),
+      oAuthState: config.get('slack.oAuthState')
+    }
   })
 })
 
