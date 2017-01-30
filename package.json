@@ -8,7 +8,7 @@
     "test": "nyc ava",
     "coverage-html": "nyc report --reporter=html",
     "coverage-coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "docker-test": "bin/test.sh"
+    "docker-test": "bin/docker-test.sh"
   },
   "author": "Shaun",
   "license": "ISC",

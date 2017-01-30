@@ -7,6 +7,6 @@ taptapboom:
   links:
     - redis
   working_dir: /usr/src/app
-  command: bash -c "npm test && npm run coverage-coveralls"
+  command: bash -c "./bin/test.sh"
 redis:
   image: redis:3.2

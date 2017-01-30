@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-docker-compose -f docker-compose.test.yml -p ci up --build --abort-on-container-exit
+npm run test
 
-exit $(docker wait ci_taptapboom_1)
+# run coverage-coveralls only if COVERALLS_REPO_TOKEN env variable is set
+if ! [ -z ${COVERALLS_REPO_TOKEN+x} ]; then npm run coverage-coveralls; fi
