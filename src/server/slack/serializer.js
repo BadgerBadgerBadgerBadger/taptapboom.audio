@@ -6,6 +6,12 @@ const Constants = require('src/constants')
 
 function serializeSearchResults(query, results) {
 
+  if (!results.length) {
+    const text = `Sorry. We couldn't find any results for that 😞` // :disappointed: emoji
+
+    return { response_type: 'in_channel', text, attachments: [] }
+  }
+
   const attachments = _.map(
     results,
     i => {
@@ -34,11 +40,21 @@ function serializeSearchResults(query, results) {
   )
     .slice(0, 5)
 
-  let text = `Here's what we found for: *${query}*`
+  attachments.push({
+    attachment_type: 'default',
+    fallback: Constants.SLACK.INTERACTIVE.SONG_SEARCH.ACTION.SKIP_SEARCH.FALLBACK_TEXT,
+    callback_id: Constants.SLACK.INTERACTIVE.SONG_SEARCH.CALLBACK_ID,
+    actions: [
+      {
+        name: Constants.SLACK.INTERACTIVE.SONG_SEARCH.ACTION.SKIP_SEARCH.NAME,
+        text: Constants.SLACK.INTERACTIVE.SONG_SEARCH.ACTION.SKIP_SEARCH.TEXT,
+        type: 'button',
+        value: 'skip'
+      }
+    ]
+  })
 
-  if (!attachments.length) {
-    text = `Sorry. We couldn't find any results for that 😞` // :disappointed: emoji
-  }
+  const text = `Here's what we found for: *${query}*`
 
   return { response_type: 'in_channel', text, attachments }
 }

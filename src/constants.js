@@ -20,6 +20,11 @@ module.exports = {
           ADD_SONG: {
             NAME: 'add_song',
             TEXT: 'Add to Playlist'
+          },
+          SKIP_SEARCH: {
+            NAME: 'skip_search',
+            TEXT: 'Skip',
+            FALLBACK_TEXT: 'You were unable to skip.'
           }
         }
       }
