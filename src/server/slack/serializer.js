@@ -3,9 +3,9 @@
 const _ = require('lodash')
 
 const Constants = require('src/constants')
+const ColorUtil = require('src/util/color')
 
 function serializeSearchResults(query, results) {
-
   if (!results.length) {
     const text = `Sorry. We couldn't find any results for that 😞` // :disappointed: emoji
 
@@ -20,7 +20,7 @@ function serializeSearchResults(query, results) {
       artists = artists.join(' ft. ')
 
       return {
-        color: _getRandomColor(),
+        color: ColorUtil.getRandomColor(),
         thumb_url: i.album.images[0].url,
 
         title: `${i.name} - ${artists}`,
@@ -57,15 +57,6 @@ function serializeSearchResults(query, results) {
   const text = `Here's what we found for: *${query}*`
 
   return { response_type: 'in_channel', text, attachments }
-}
-
-function _getRandomColor() {
-
-  const letters = '0123456789ABCDEF'
-  let color = '#'
-  color += _.times(6, () => letters[Math.floor(Math.random() * 16)]).join('')
-
-  return color
 }
 
 module.exports = {
