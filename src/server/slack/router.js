@@ -58,6 +58,11 @@ router.post('/interactive', (req, res) => {
 
         const action = _.get(req, 'body.actions')[0]
         debug(`Action received: ${JSON.stringify(action)}`)
+
+        if (action.name === Constants.SLACK.INTERACTIVE.SONG_SEARCH.ACTION.SKIP_SEARCH.NAME) {
+          return { delete_original: true }
+        }
+
         const trackId = action.value
         const track = yield Spotify.getTrackFromId(trackId)
         const trackName = track.name
