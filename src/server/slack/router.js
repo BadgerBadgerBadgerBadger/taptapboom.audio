@@ -49,6 +49,9 @@ router.post('/command', (req, res) => {
 router.post('/interactive', (req, res) => {
 
   return co(function* () {
+
+    res.send({ text: Constants.MESSAGING.WAIT_FOR_IT })
+
     const callbackId = req.body.callback_id
 
     switch (callbackId) {
@@ -66,8 +69,6 @@ router.post('/interactive', (req, res) => {
         const trackId = action.value
         const track = yield Spotify.getTrackFromId(trackId)
         const trackName = track.name
-
-        res.send({ text: Constants.MESSAGING.WAIT_FOR_IT })
 
         const result = yield Spotify.addTrackToTargetPlaylist(trackId)
 
