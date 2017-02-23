@@ -12,6 +12,9 @@
   },
   "author": "Shaun",
   "license": "ISC",
+  "engines": {
+    "node": "6.9.4"
+  },
   "dependencies": {
     "bluebird": "3.4.7",
     "body-parser": "1.15.2",
