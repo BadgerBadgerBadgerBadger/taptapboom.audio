@@ -1,6 +1,10 @@
 'use strict'
 
 module.exports = {
+  KV_JSON: {
+    SQL_TABLE_NAME: 'kv_json'
+  },
+
   MESSAGING: {
     UH_OH: `Uh-oh! Looks like we broke something 😅`, // :sweat_smile: emoji
     WAIT_FOR_IT: `Wait for it...`,

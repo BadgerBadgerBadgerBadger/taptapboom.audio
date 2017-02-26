@@ -1,9 +1,13 @@
 
 app:
+  name: APP_NAME
   baseUri: APP_BASE_URI
 
 server:
   port: PORT
+
+postgres:
+  databaseUri: POSTGRES_DATABASE_URI
 
 spotify:
   clientId: SPOTIFY_CLIENT_ID
@@ -13,9 +17,7 @@ spotify:
   targetPlaylist: SPOTIFY_TARGET_PLAYLIST
 
 slack:
+  verificationToken: SLACK_VERIFICATION_TOKEN
   clientId: SLACK_CLIENT_ID
   clientSecret: SLACK_CLIENT_SECRET
-  verificationToken: SLACK_VERIFICATION_TOKEN
-
-redis:
-  host: REDIS_HOST
+  oAuthState: SLACK_OAUTH_STATE

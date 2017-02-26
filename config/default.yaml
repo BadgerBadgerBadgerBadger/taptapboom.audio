@@ -1,3 +1,9 @@
 
+app:
+  name: taptapboom
+
 server:
   port: 4567
+
+postgres:
+  debug: false
