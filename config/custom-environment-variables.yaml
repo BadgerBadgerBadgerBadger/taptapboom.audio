@@ -7,7 +7,7 @@ server:
   port: PORT
 
 postgres:
-  databaseUri: POSTGRES_DATABASE_URI
+  databaseUri: DATABASE_URL
 
 spotify:
   clientId: SPOTIFY_CLIENT_ID
