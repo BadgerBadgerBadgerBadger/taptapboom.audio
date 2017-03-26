@@ -13,8 +13,6 @@ spotify:
   clientId: SPOTIFY_CLIENT_ID
   clientSecret: SPOTIFY_CLIENT_SECRET
   redirectUri: SPOTIFY_REDIRECT_URI
-  playlistUser: SPOTIFY_PLAYLIST_USER
-  targetPlaylist: SPOTIFY_TARGET_PLAYLIST
 
 slack:
   verificationToken: SLACK_VERIFICATION_TOKEN
