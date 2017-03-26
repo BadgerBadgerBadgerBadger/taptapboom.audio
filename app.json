@@ -9,11 +9,12 @@
       "value": "$NODE_PATH:./"
     },
     "NODE_ENV": {
-      "description": "Environement for the app."
+      "description": "Environement for the app.",
+      "value": "production"
     },
     "APP_BASE_URI": {
-      "description": "The baseurl of the app. Set this to https://<appname>.herokuapp.com",
-      "value": "<rando>"
+      "description": "The baseurl of the app. Replace <appname> with your app's name.",
+      "value": "https://<appname>.herokuapp.com"
     },
     "SPOTIFY_CLIENT_ID": {
       "description": "The number of processes to run.",
@@ -61,5 +62,8 @@
     {
       "url": "https://github.com/heroku/heroku-buildpack-nodejs#v98"
     }
-  ]
+  ],
+  "scripts": {
+    "postdeploy": "./node_modules/knex/bin/cli.js migrate:latest"
+  }
 }
