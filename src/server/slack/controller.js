@@ -8,7 +8,7 @@ function authorizeSlack(req, res, next) {
 
   const token = _getTokenFromRequest(req)
 
-  const doesntMatchEitherToken = (token !== config.get('slack.token') && 
+  const doesntMatchEitherToken = (token !== config.get('slack.verificationToken') && 
   token !== config.get('slack.verificationToken'))
 
   if (!token || doesntMatchEitherToken) {

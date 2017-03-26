@@ -1,6 +1,5 @@
 'use strict'
 
-const debug = require('debug')('controller-slack')
 const express = require('express')
 const _ = require('lodash')
 const request = require('request-promise')
@@ -12,6 +11,7 @@ const Controller = require('src/server/slack/controller')
 const Spotify = require('src/spotify/app')
 const Serializer =  require('src/server/slack/serializer')
 
+const debug = Logger.getDebug('controller-slack')
 const router = express.Router({ mergeParams: true })
 
 router.use(Controller.authorizeSlack)
@@ -69,6 +69,7 @@ router.post('/interactive', (req, res) => {
         const trackId = action.value
         const track = yield Spotify.getTrackFromId(trackId)
         const trackName = track.name
+        const artists = Spotify.getArtistsFromTrack(track)
 
         const result = yield Spotify.addTrackToTargetPlaylist(trackId)
 
@@ -76,7 +77,7 @@ router.post('/interactive', (req, res) => {
           return { text: Constants.MESSAGING.UH_OH }
         }
 
-        return { text: Constants.MESSAGING.SPOTIFY.getSONG_SUCCESSFULLY_ADDED(trackName) }
+        return { text: Constants.MESSAGING.SPOTIFY.getSONG_SUCCESSFULLY_ADDED(trackName, artists) }
 
       default:
         Logger.error(`Unsupported callbackId received: ${callbackId}.`)

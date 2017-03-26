@@ -8,8 +8,9 @@ const cons = require('consolidate')
 
 const AuthorizationRouter = require('src/server/authorization/router')
 const AdminRouter = require('src/server/admin/router')
-const SlackRouter = require('src/server/slack/router')
 const Logger = require('src/util/logger')
+const SlackRouter = require('src/server/slack/router')
+const SpotifyRouter = require('src/server/spotify/router')
 
 const app = express()
 
@@ -35,9 +36,16 @@ app.get('/', (req, res) => {
   })
 })
 
+app.use(express.static(__dirname + '/public'))
+
 app.use('/api/auth', AuthorizationRouter)
 app.use('/api/admin', AdminRouter)
 app.use('/api/slack', SlackRouter)
+app.use('/api/spotify', SpotifyRouter)
+
+app.use((err, req, res, next) => {
+  Logger.error(err, err.stack)
+})
 
 const port = config.get('server.port')
 

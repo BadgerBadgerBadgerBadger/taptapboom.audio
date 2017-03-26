@@ -12,9 +12,9 @@ const TABLE_NAME = Constants.KV_JSON.SQL_TABLE_NAME
  */
 function setAsync(key, value) {
 
-  const rawSql = `INSERT INTO ${TABLE_NAME} (k, v) ` +
-                `VALUES ('${key}','${value}') ` +
-                `ON CONFLICT (k) DO UPDATE SET (v) = ('${value}') ` +
+  const rawSql = `INSERT INTO ${TABLE_NAME} (k, v, l) ` +
+                `VALUES ('${key}','${value}', '${(new Date().toISOString())}') ` +
+                `ON CONFLICT (k) DO UPDATE SET v = '${value}' ` +
                 `WHERE ${TABLE_NAME}.k = '${key}';`
 
   return pg.raw(rawSql)
@@ -26,9 +26,7 @@ function setAsync(key, value) {
  */
 function getAsync(key) {
   return pg(TABLE_NAME)
-    .where({
-      k: key
-    })
+    .where({ k: key })
     .select('v')
     .then(res => {
 

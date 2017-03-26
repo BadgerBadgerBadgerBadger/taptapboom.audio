@@ -2,6 +2,7 @@
 
 const co = require('bluebird').coroutine
 
+const Slack = require('src/slack')
 const Spotify = require('src/spotify/app')
 const Server = require('src/server')
 const Logger = require('src/util/logger')
@@ -24,6 +25,10 @@ process.on('unhandledRejection', (reason, promise) => {
 
 co(function* () {
 
+  yield Slack.init()
   yield Spotify.init()
   Server.init()
 })()
+  .catch(err => {
+    Logger.error({ message: `Failure during startup: ${err.message}`, stack: err.stack })
+  })
