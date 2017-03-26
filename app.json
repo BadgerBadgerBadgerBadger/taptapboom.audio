@@ -24,14 +24,6 @@
       "description": "The number of processes to run.",
       "value": "<rando>"
     },
-    "SPOTIFY_PLAYLIST_USER": {
-      "description": "The number of processes to run.",
-      "value": "<rando>"
-    },
-    "SPOTIFY_TARGET_PLAYLIST": {
-      "description": "The number of processes to run.",
-      "value": "<rando>"
-    },
     "SLACK_CLIENT_ID": {
       "description": "The number of processes to run.",
       "value": "<rando>"
@@ -43,6 +35,10 @@
     "SLACK_VERIFICATION_TOKEN": {
       "description": "The number of processes to run.",
       "value": "<rando>"
+    },
+    "SLACK_OAUTH_STATE": {
+      "required": "true",
+      "generator": "secret"
     }
   },
   "formation": {
