@@ -4,37 +4,44 @@
   "repository": "https://github.com/Nwinworks/taptapboom.audio",
   "logo": "https://node-js-sample.herokuapp.com/node.png",
   "env": {
+    "NODE_PATH": {
+      "description": "Required for setting up relative paths.",
+      "value": "$NODE_PATH:./"
+    },
+    "NODE_ENV": {
+      "description": "Environement for the app."
+    },
     "APP_BASE_URI": {
-      "description": "A secret key for verifying the integrity of signed cookies.",
-      "generator": "secret"
+      "description": "The baseurl of the app. Set this to https://<appname>.herokuapp.com",
+      "value": "<rando>"
     },
     "SPOTIFY_CLIENT_ID": {
       "description": "The number of processes to run.",
-      "value": "5"
+      "value": "<rando>"
     },
     "SPOTIFY_CLIENT_SECRET": {
       "description": "The number of processes to run.",
-      "value": "5"
+      "value": "<rando>"
     },
     "SPOTIFY_PLAYLIST_USER": {
       "description": "The number of processes to run.",
-      "value": "5"
+      "value": "<rando>"
     },
     "SPOTIFY_TARGET_PLAYLIST": {
       "description": "The number of processes to run.",
-      "value": "5"
+      "value": "<rando>"
     },
     "SLACK_CLIENT_ID": {
       "description": "The number of processes to run.",
-      "value": "5"
+      "value": "<rando>"
     },
     "SLACK_CLIENT_SECRET": {
       "description": "The number of processes to run.",
-      "value": "5"
+      "value": "<rando>"
     },
     "SLACK_VERIFICATION_TOKEN": {
       "description": "The number of processes to run.",
-      "value": "5"
+      "value": "<rando>"
     }
   },
   "formation": {
