@@ -3,7 +3,7 @@
 const co = require('bluebird').coroutine
 
 const Slack = require('src/slack')
-const Spotify = require('src/spotify/app')
+const Spotify = require('src/spotify')
 const Server = require('src/server')
 const Logger = require('src/util/logger')
 
