@@ -1,19 +1,18 @@
 'use strict'
 
-const co = require('bluebird').coroutine
 const express = require('express')
 const request = require('request-promise')
 
 const Logger = require('src/util/logger')
 const Slack = require('src/slack')
 
-const router = express.Router({ mergeParams: true })
+const router = express.Router({mergeParams: true})
 
 router.get('/callback', (req, res) => {
-  return co(function* () {
+  return (async function () {
 
     const code = req.query.code
-    yield Slack.authorize(code)
+    await Slack.authorize(code)
 
     res.redirect('/api/auth')
   })()

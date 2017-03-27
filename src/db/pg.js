@@ -1,6 +1,5 @@
 'use strict'
 
-const Promise = require('bluebird')
 const config = require('config')
 
 const debug = config.get('postgres.debug') === 'true'
@@ -11,8 +10,8 @@ const pg = require('knex')({
   debug
 })
 
-const init = function () {
-  return Promise.resolve()
+const init = async function () {
+  return null
 }
 
 module.exports = {

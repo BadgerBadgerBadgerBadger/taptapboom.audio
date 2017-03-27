@@ -1,7 +1,6 @@
 'use strict'
 
 const _ = require('lodash')
-const co = require('bluebird').coroutine
 const config = require('config')
 const request = require('request-promise')
 
@@ -17,26 +16,24 @@ const local = {
   }
 }
 
-function authorize(code) {
-  return co(function* () {
+async function authorize(code) {
 
-    const options = {
-      uri: 'https://slack.com/api/oauth.access',
-      qs: {
-        code,
-        client_id: config.get('slack.clientId'),
-        client_secret: config.get('slack.clientSecret')
-      },
-      json: true
-    }
+  const options = {
+    uri: 'https://slack.com/api/oauth.access',
+    qs: {
+      code,
+      client_id: config.get('slack.clientId'),
+      client_secret: config.get('slack.clientSecret')
+    },
+    json: true
+  }
 
-    const response = yield request(options)
-    const accessToken = _.get(response, 'access_token')
+  const response = await request(options)
+  const accessToken = _.get(response, 'access_token')
 
-    yield Kv.setAsync(Constants.STORAGE_KEY.SLACK.ACCESS_TOKEN, accessToken)
+  await Kv.setAsync(Constants.STORAGE_KEY.SLACK.ACCESS_TOKEN, accessToken)
 
-    local.state.connected = true
-  })()
+  local.state.connected = true
 }
 
 function getState() {
@@ -65,24 +62,22 @@ function testAuth(token) {
     })
 }
 
-function init() {
-  return co(function* () {
+async function init() {
 
-    debug('Fetching slack token from storage.')
-    const accessTokenFromStorage = yield Kv.getAsync(Constants.STORAGE_KEY.SLACK.ACCESS_TOKEN)
+  debug('Fetching slack token from storage.')
+  const accessTokenFromStorage = await Kv.getAsync(Constants.STORAGE_KEY.SLACK.ACCESS_TOKEN)
 
-    if (!accessTokenFromStorage) {
-      debug(`Slack token not found in storage.`)
-      return
-    }
+  if (!accessTokenFromStorage) {
+    debug(`Slack token not found in storage.`)
+    return
+  }
 
-    debug(`Slack token found in storage.`)
-    const isSlackConnected = yield testAuth(accessTokenFromStorage)
+  debug(`Slack token found in storage.`)
+  const isSlackConnected = await testAuth(accessTokenFromStorage)
 
-    if (isSlackConnected) {
-      local.state.connected = true
-    }
-  })()
+  if (isSlackConnected) {
+    local.state.connected = true
+  }
 }
 
 module.exports = {

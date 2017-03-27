@@ -1,26 +1,25 @@
 'use strict'
 
-const co = require('bluebird').coroutine
 const config = require('config')
 const express = require('express')
 
-const router = express.Router({ mergeParams: true })
+const router = express.Router({mergeParams: true})
 const Logger = require('src/util/logger')
 const SpotifyRouter = require('src/server/authorization/spotify')
 const SlackRouter = require('src/server/authorization/slack')
 const Slack = require('src/slack')
-const Spotify = require('src/spotify/app')
+const Spotify = require('src/spotify')
 
 router.get('/', (req, res) => {
-  return co(function* () {
+  return (async function () {
 
     let spotifyPlaylists = null
-    const selectedPlaylist = yield Spotify.getSelectedPlaylist()
+    const selectedPlaylist = await Spotify.getSelectedPlaylist()
     const slackState = Slack.getState()
     const spotifyState = Spotify.getState()
 
     if (spotifyState.connected) {
-      spotifyPlaylists = (yield Spotify.getAvailablePlaylists(yield Spotify.getUser()))
+      spotifyPlaylists = (await Spotify.getAvailablePlaylists(await Spotify.getUser()))
     }
 
     res.render('connect.html', {

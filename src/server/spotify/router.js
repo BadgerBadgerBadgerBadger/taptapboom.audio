@@ -1,17 +1,16 @@
 'use strict'
 
-const co = require('bluebird').coroutine
 const express = require('express')
 const request = require('request-promise')
 
-const Spotify = require('src/spotify/app')
+const Spotify = require('src/spotify')
 
-const router = express.Router({ mergeParams: true })
+const router = express.Router({mergeParams: true})
 
 router.post('/playlist', (req, res) => {
-  return co(function* () {
+  return (async function () {
 
-    yield Spotify.setPlaylist(req.body['spotify-playlist'])
+    await Spotify.setPlaylist(req.body['spotify-playlist'])
     res.redirect('/api/auth')
   })()
 })
