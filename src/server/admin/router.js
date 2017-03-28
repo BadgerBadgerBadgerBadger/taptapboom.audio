@@ -2,8 +2,8 @@
 
 const express = require('express')
 
-const Serializer = require('src/server/admin/serializer')
-const Spotify = require('src/spotify/app')
+// const Serializer = require('src/server/admin/serializer')
+const Spotify = require('src/spotify')
 
 const router = express.Router({ mergeParams: true })
 

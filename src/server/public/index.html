@@ -1,7 +1,106 @@
-<a href="https://slack.com/oauth/authorize?scope=commands&client_id={{ slack.clientId }}&state={{ slack.oAuthState }}">
-    <img alt="Add to Slack" height="40" width="139"
-         src="https://platform.slack-edge.com/img/add_to_slack.png"
-         srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" />
-</a>
+{% extends 'layout/shell.html' %}
 
-<a href="{{ app.baseUri }}/api/auth/spotify">Authorize Spotify</a>
+{% block head %}
+
+    {% parent %}
+
+    <div class="line line-max center-content-tablet">
+        <div class="left-column line-tablet">
+            <div class="separator10"></div>
+            <div class="slogan">
+                <div class="separator30 mobile"></div>
+                <h1 class="line font-big font-one font-medium color-white">
+                    Collaborate on a Spotify Playlist
+                </h1>
+                <div class="separator10"></div>
+                <h3 class="description font-bold color-white font-handwritten">through Slack!</h3>
+            </div>
+            <div class="separator50"></div>
+            <div>
+                <div class="separator30"></div>
+                <div class="separator50"></div>
+                <div class="line downloads center-content-tablet">
+
+                    <a class="download-link line color-white center-content win show" href="/api/auth">
+                        <i class="fa fa-music"></i>&nbsp;Start
+                    </a>
+                </div>
+                <div class="separator50 desktop"></div>
+                <div class="separator30"></div>
+
+            </div>
+        </div>
+        <br>
+        <div class="right-column line-tablet center-content-tablet">
+            <img class="screenshot desktop" src="./ttbm/slackgif1.0x4.gif">
+
+        </div>
+        <div class="separator30"></div>
+
+
+    </div>
+
+{% endblock %}
+
+{% block body %}
+<div class="article line left-content center-content-tablet win">
+    <div class="separator50"></div>
+    <div class="separator10"></div>
+    <div class="line line-max">
+        <div class="separator100"></div>
+        <div class="col5 line-tablet">
+            <div class="col5 line-mobile">
+          <span>
+          <div class="left-content center-content-tablet">
+            <span class="font-bold color-black"><i class="fa fa-search"></i> Search Songs</span><div
+                  class="separator10"></div>  Search Spotify from the comfort of your favourite Slack channel!</div>
+          </span>
+            </div>
+            <div class="col5 line-mobile">
+        <span>
+          <div class="left-content center-content-tablet"><span class="font-bold color-black"><i
+                  class="fa fa-angle-double-right "></i> Queue Songs</span>  <div class="separator10"></div>Queue it to your team's collaborative playlist. (Coming Soon: Beat the queue!)</div>
+        </span>
+            </div>
+        </div>
+        <div class="col5 line-tablet">
+            <div class="separator30 tablet"></div>
+            <div class="col5 line-mobile">
+          <span>
+            <div class="left-content center-content-tablet"><span class="font-bold color-black"><i
+                    class="fa fa-bar-chart "></i> Get Analytics </span><div class="separator10"></div>Find out how hipster or depressing your team is based on the nature of songs being queued. </div>
+          </span>
+            </div>
+            <div class="col5 line-mobile">
+          <span>
+            <div class="left-content center-content-tablet"><span class="font-bold color-black"><i
+                    class="fa fo-eye "></i> See What's Queued</span> <div class="separator10"></div> See which songs are queued! (Coming Soon: See which of your friends queued Nickelback and insta-ban him)</div>
+          </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="separator50"></div>
+<div class="separator50"></div>
+<div class="line bg-yellow">
+    <div class="line-compress line-max github-infos center-content-tablet">
+        <div class="separator30"></div>
+        <div class="separator10"></div>
+        <div class="font-light">
+            Created by some guys from Vashi, Navi Mumbai
+            <a href="twitter.com/shaun" target="_blank" class="color-red">&nbsp;&nbsp;&nbsp;@shaun</a>
+            <a href="twitter.com/shaun" target="_blank" class="color-red"> &nbsp;@prathamesh</a>
+            <a href="twitter.com/shaun" target="_blank" class="color-red"> &nbsp;@ann</a>
+            <a href="twitter.com/shaun" target="_blank" class="color-red"> &nbsp;@siddharthgopi</a>
+            &nbsp;&nbsp;&nbsp;
+            <div class="separator10 show-mobile-tablet tablet"></div>
+            <div class="separator10 tablet"></div>
+            <div class="separator10 tablet"></div>
+        </div>
+        <div class="separator10"></div>
+        <div class="separator30"></div>
+        <div class="separator30 tablet"></div>
+    </div>
+</div>
+<div class="separator50"></div>
+{% endblock %}

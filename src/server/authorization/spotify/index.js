@@ -1,24 +1,24 @@
 'use strict'
 
-const debug = require('debug')('authorization')
 const express = require('express')
-const co = require('bluebird').coroutine
 
 const Constants = require('src/constants')
-const Spotify = require('src/spotify/app')
-const Redis = require('src/db/redis')
+const Spotify = require('src/spotify')
+const Kv = require('src/kv')
+const Logger = require('src/util/logger')
 
-const router = express.Router({ mergeParams: true })
+const debug = Logger.getDebug('authorization')
+const router = express.Router({mergeParams: true})
 
 router.get('/', (req, res) => {
-  return co(function* () {
+  return (async function () {
 
     let accessToken = Spotify.client.getAccessToken()
 
     if (accessToken) {
       debug(`Found Spotify access token in memory.`)
     } else {
-      accessToken = yield Redis.client.getAsync(Constants.STORAGE_KEY.SPOTIFY.ACCESS_TOKEN)
+      accessToken = await Kv.getAsync(Constants.STORAGE_KEY.SPOTIFY.ACCESS_TOKEN)
       Spotify.client.setAccessToken(accessToken)
     }
 
@@ -33,27 +33,21 @@ router.get('/', (req, res) => {
 
 router.get('/authorize', (req, res) => {
 
-  const scopes = ['playlist-modify-public', 'playlist-modify-private']
-  const state  = Date.now()
+  const scopes = [
+    'playlist-read-private', 'playlist-read-collaborative',
+    'playlist-modify-public', 'playlist-modify-private'
+  ]
+  const state = Date.now().toString()
   const authoriseURL = Spotify.client.createAuthorizeURL(scopes, state)
 
   res.redirect(authoriseURL)
 })
 
 router.get('/callback', (req, res) => {
-  return co(function* () {
+  return (async function () {
 
-    const data = yield Spotify.client.authorizationCodeGrant(req.query.code)
-    debug(`Spotify access and refresh tokens received.`)
-
-    Spotify.client.setAccessToken(data.body['access_token'])
-    Spotify.client.setRefreshToken(data.body['refresh_token'])
-
-    yield Redis.client.setAsync(Constants.STORAGE_KEY.SPOTIFY.ACCESS_TOKEN, data.body['access_token'])
-    yield Redis.client.setAsync(Constants.STORAGE_KEY.SPOTIFY.REFRESH_TOKEN, data.body['refresh_token'])
-    debug(`Spotify access and refresh tokens stored.`)
-
-    return res.redirect('/')
+    await Spotify.authorize(req.query.code)
+    return res.redirect('/api/auth')
   })()
     .catch(err => res.send(err))
 })

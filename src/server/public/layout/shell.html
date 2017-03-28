@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="initial-scale=1,width=device-width">
+    <meta http-equiv="cache-control" content="max-age=86400">
+    <meta name="robots" content="index,follow">
+    <meta name="audience" content="all">
+    <meta name="distribution" content="global">
+    <meta name="rating" content="general">
+    <meta name="revisit-after" content="1 days">
+    <meta name="google" content="notranslate">
+    <meta property="og:url" content=""> <!-- TODO -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Tap Tap Boom">
+    <meta property="og:image" content=""> <!-- TODO  -->
+    <meta property="og:description" content=""> <!-- TODO -->
+    <title>Tap Tap Boom - Collaborate Spotify Playlist through</title>
+    <link href="/ttbm/helper.min.css" rel="stylesheet" type="text/css">
+    <link href="/ttbm/site.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/ttbm/fontello-embedded.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/ttbm/balloon.min.css">
+    <link href="/ttbm/css" rel="stylesheet" type="text/css">
+    <script id="twitter-wjs" src="/ttbm/widgets.js"></script>
+    <script type="text/javascript" src="/ttbm/jquery.min.js"></script>
+    <script type="text/javascript" src="/ttbm/jquery.sparkles.js"></script>
+
+</head>
+<body>
+
+ <!--HEADER-->
+    {% block head %}
+    <div class="line header sparkley bg-gradient linux" style="position: relative;">
+        <div class="separator50"></div>
+        <div class="top line-compress line-max ">
+            <div class="col4 left-content">
+                <h1 class="logo color-white">
+                    <a target="_blank" class="color-white" href="https://www.taptapboom.audio">
+                        <img class="v-middle" width="175" src="/ttbm/ttblogo-3mid.png">
+
+                    </a>
+                </h1>
+            </div>
+            <div class="top-menu col6 right-content">
+                <a href="https://github.com/Nwinworks/taptapboom.audio" target="_blank"
+                   class="color-white toggle-opacity-hover"> <span class="desktop"><i class="fa fa-github"></i></span>
+                    Github</a>
+                <a href="https://github.com/Nwinworks/taptapboom.audio/blob/master/README.md" target="_blank"
+                   class="color-white toggle-opacity-hover"> <span class="desktop">Contribute</span></a>
+                <a href="https://gitter.im/taptapboom/" target="_blank" class="color-white toggle-opacity-hover"> <span
+                        class="desktop">Join</span> Chat</a>
+            </div>
+        </div>
+        <div class="line line-max">
+            <div class="separator50"></div>
+
+            {% endblock %}
+        </div>
+        <canvas class="sparkle-canvas" width="1300" height="500"
+                style="position: absolute; top: -10px; left: -10px; pointer-events: none;"></canvas>
+    </div>
+ <!--END HEADER-->
+
+<div class="separator30 desktop"></div>
+<div class="separator30"></div>
+
+{% block body %}
+
+{% endblock %}
+
+<div class="line footer">
+    <div class="line-compress line-max left-content color-muted">
+        <div class="separator30"></div>
+        <div class="line line-tablet center-content-tablet">
+
+            <a class="color-black toggle-opacity-hover" href="https://gitter.im/taptapboom/" target="_blank"> Talk to
+                us!</a>
+
+            <a class="color-black toggle-opacity-hover pull-right desktop" href="https://twitter.com/taptapboom"
+               target="_blank"><i class="color-twitter fa fa-twitter"></i> Follow on Twitter</a>
+            <a class="color-black toggle-opacity-hover tablet mobile" href="https://twitter.com/taptapboom"
+               target="_blank"> &nbsp; <i class="color-twitter fa fa-twitter"></i> Follow on Twitter</a>
+            <div class="separator30 tablet mobile"></div>
+            <div class="separator30"></div>
+        </div>
+        <div class="separator30 tablet mobile"></div>
+    </div>
+</div>
+</body>
+</html>

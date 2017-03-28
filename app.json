@@ -1,0 +1,58 @@
+{
+  "name": "Taptapboom.audio",
+  "description": "Have fun with Spotify without leaving the comforts of Slack.",
+  "repository": "https://github.com/Nwinworks/taptapboom.audio",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "env": {
+    "NODE_PATH": {
+      "value": "$NODE_PATH:./"
+    },
+    "NODE_ENV": {
+      "value": "production"
+    },
+    "APP_BASE_URI": {
+      "description": "The baseurl of the app. Replace <appname> with your app's name.",
+      "value": "https://<appname>.herokuapp.com"
+    },
+    "SPOTIFY_CLIENT_ID": {
+      "value": "<rando>"
+    },
+    "SPOTIFY_CLIENT_SECRET": {
+      "value": "<rando>"
+    },
+    "SLACK_CLIENT_ID": {
+      "value": "<rando>"
+    },
+    "SLACK_CLIENT_SECRET": {
+      "value": "<rando>"
+    },
+    "SLACK_VERIFICATION_TOKEN": {
+      "value": "<rando>"
+    },
+    "SLACK_OAUTH_STATE": {
+      "required": "true",
+      "generator": "secret"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql",
+      "options": {
+        "version": "9.5"
+      }
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-nodejs#v98"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "./node_modules/knex/bin/cli.js migrate:latest"
+  }
+}
