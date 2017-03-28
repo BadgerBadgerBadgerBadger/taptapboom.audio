@@ -7,8 +7,9 @@ const request = require('request-promise')
 const Logger = require('src/util/logger')
 const Constants = require('src/constants')
 const Controller = require('src/server/slack/controller')
-const Spotify = require('src/spotify')
 const Serializer = require('src/server/slack/serializer')
+const Slack = require(`src/slack`)
+const Spotify = require('src/spotify')
 
 const debug = Logger.getDebug('controller-slack')
 const router = express.Router({mergeParams: true})
@@ -31,25 +32,24 @@ router.post('/command', (req, res) => {
         })
 
       case 'help':
-        return _displayHelp(req.body, query, res)
+        return _displayHelp()
 
       case 'add':
-        return _searchMusicFromSpotify(req.body, query, res)
-
-      case 'nowplaying':
-        return res.send('l')
+        return _searchMusicFromSpotify(req.body.response_url, query)
 
       default:
-        return res.json({text: `We don't support that yet.`})
+        return {text: `I don't support that yet 😕 If you think I should, tweet out to @scionofbytes 🐥`}
     }
   })()
+    .then(result => res.send(result))
 })
 
 router.post('/interactive', (req, res) => {
 
   return (async function () {
 
-    res.send({text: Constants.MESSAGING.WAIT_FOR_IT})
+    res.send()
+    Slack.pushToUri(req.body.response_url, {text: Constants.MESSAGING.WAIT_FOR_IT})
 
     const callbackId = req.body.callback_id
 
@@ -68,7 +68,7 @@ router.post('/interactive', (req, res) => {
         const trackId = action.value
         const track = await Spotify.getTrackFromId(trackId)
         const trackName = track.name
-        const artists = Spotify.getArtistsFromTrack(track)
+        const artists = Spotify.constructArtistName(track.artists)
 
         const result = await Spotify.addTrackToTargetPlaylist(trackId)
 
@@ -83,23 +83,31 @@ router.post('/interactive', (req, res) => {
         return {text: Constants.MESSAGING.UH_OH}
     }
   })()
-    .then(res => request({uri: req.body.response_url, method: 'POST', json: res}))
+    .then(result => Slack.pushToUri(req.body.response_url, result))
 })
 
-async function _searchMusicFromSpotify(requestBody, query, res) {
+/**
+ * Searches Spotify with the given query and sends a serialized list of the same to the repsonse_url.
+ *
+ * @param {String} response_url
+ * @param {String} query
+ * @returns {Promise}
+ * @private
+ */
+async function _searchMusicFromSpotify(response_url, query) {
+  (async function () {
 
-  res.json({text: Constants.MESSAGING.WAIT_FOR_IT})
+    const results = await Spotify.search(query)
+    const serialized = Serializer.serializeSearchResults(query, results)
 
-  const results = await Spotify.search(query)
-  const serialized = Serializer.serializeSearchResults(query, results.items)
+    const response = Object.assign(serialized, {delete_original: true, response_type: 'in_channel'})
 
-  await request({uri: requestBody.response_url, method: 'POST', json: serialized})
+    await Slack.pushToUri(response_url, response)
+  })()
 }
 
-function _displayHelp(req, query, res) {
-  res.json({
-    text: 'massive'
-  })
+function _displayHelp() {
+  return {text: `Use "add" followed by your search query to look for songs.`}
 }
 
 module.exports = router

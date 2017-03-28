@@ -1,5 +1,6 @@
 'use strict'
 
+const _ = require('lodash')
 const config = require('config')
 
 const Constants = require('src/constants')
@@ -94,26 +95,23 @@ async function getUser() {
   return local.user
 }
 
-function search(queryString) {
-  return spotifyClient.searchTracks(queryString)
-    .then(r => {
+/**
+ * @param {String} queryString
+ * @returns {Promise<Object>}
+ */
+async function search(queryString) {
 
-      const items = r.body.tracks.items
-      const response = {
-        status: 'success',
-        items
-      }
+  const results = await spotifyClient.searchTracks(queryString)
+  const items = _.get(results, `body.tracks.items`)
 
-      if (!items.length) {
-        response.status = 'failure'
-      }
+  if (_.isEmpty(items)) {
+    return {status: Constants.RESULT.STATUS.FAILURE}
+  }
 
-      return response
-    })
-    .catch(err => {
-      Logger.error({error: err, stack: err.stack})
-      return {status: 'failure'}
-    })
+  return {
+    status: Constants.RESULT.STATUS.SUCCESS,
+    items
+  }
 }
 
 function addTrackToTargetPlaylist(trackId) {
@@ -169,12 +167,17 @@ async function setPlaylist(playlistId) {
   }
 }
 
-function getArtistsFromTrack(track) {
+/**
+ * Given an array of Spotify artist objects, construct a composite artists name.
+ *
+ * @param {Object[]} artists
+ */
+function constructArtistName(artists) {
 
-  const majorArtist = track.artists.shift()
+  const majorArtist = artists.shift()
   let artistsName = majorArtist.name
 
-  for (const artist of track.artists) {
+  for (const artist of artists) {
     artistsName += ` ft. ${artist.name}`
   }
 
@@ -198,5 +201,5 @@ module.exports = {
   search,
   addTrackToTargetPlaylist,
   getTrackFromId,
-  getArtistsFromTrack
+  constructArtistName
 }

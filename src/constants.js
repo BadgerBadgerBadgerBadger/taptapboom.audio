@@ -37,6 +37,10 @@ module.exports = {
     }
   },
 
+  SPOTIFY: {
+    NO_OF_RESULTS: 5
+  },
+
   RESULT: {
     STATUS: {
       SUCCESS: 'success',

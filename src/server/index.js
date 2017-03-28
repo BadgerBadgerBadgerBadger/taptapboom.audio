@@ -15,9 +15,7 @@ const SpotifyRouter = require('src/server/spotify/router')
 const app = express()
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan('dev'))
 
 app.engine('html', cons.swig);

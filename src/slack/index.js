@@ -16,6 +16,13 @@ const local = {
   }
 }
 
+/**
+ * Makes an authorization call based on an oauth code and saves the returned tokens (on success)
+ * to the database. Also updates module state to connected (on success).
+ *
+ * @param {String} code
+ * @returns {Promise}
+ */
 async function authorize(code) {
 
   const options = {
@@ -40,6 +47,12 @@ function getState() {
   return local.state
 }
 
+/**
+ * Verifies if the passed token is valid.
+ *
+ * @param {String} token
+ * @returns {Promise<Boolean>}
+ */
 function testAuth(token) {
 
   const options = {
@@ -62,6 +75,12 @@ function testAuth(token) {
     })
 }
 
+/**
+ * Checks for access to slack by checking existence of tokens in database and verifying that they are still valid.
+ * Sets the module's local state accordingly.
+ *
+ * @returns {Promise}
+ */
 async function init() {
 
   debug('Fetching slack token from storage.')
@@ -74,14 +93,20 @@ async function init() {
 
   debug(`Slack token found in storage.`)
   const isSlackConnected = await testAuth(accessTokenFromStorage)
+  debug(`Valid slack token found. Connection to slack active.`)
 
   if (isSlackConnected) {
     local.state.connected = true
   }
 }
 
+async function pushToUri (uri, body) {
+  return request({uri: uri, method: 'POST', json: body})
+}
+
 module.exports = {
   authorize,
   getState,
-  init
+  init,
+  pushToUri
 }

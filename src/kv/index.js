@@ -32,7 +32,7 @@ function setAsync(key, value) {
 
 /**
  * @param {String} key
- * @returns {Promise<String>}
+ * @returns {Promise<String|null>}
  */
 function getAsync(key) {
   return pg(TABLE_NAME)

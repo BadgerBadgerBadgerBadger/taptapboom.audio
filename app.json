@@ -5,11 +5,9 @@
   "logo": "https://node-js-sample.herokuapp.com/node.png",
   "env": {
     "NODE_PATH": {
-      "description": "Required for setting up relative paths.",
       "value": "$NODE_PATH:./"
     },
     "NODE_ENV": {
-      "description": "Environement for the app.",
       "value": "production"
     },
     "APP_BASE_URI": {
@@ -17,23 +15,18 @@
       "value": "https://<appname>.herokuapp.com"
     },
     "SPOTIFY_CLIENT_ID": {
-      "description": "The number of processes to run.",
       "value": "<rando>"
     },
     "SPOTIFY_CLIENT_SECRET": {
-      "description": "The number of processes to run.",
       "value": "<rando>"
     },
     "SLACK_CLIENT_ID": {
-      "description": "The number of processes to run.",
       "value": "<rando>"
     },
     "SLACK_CLIENT_SECRET": {
-      "description": "The number of processes to run.",
       "value": "<rando>"
     },
     "SLACK_VERIFICATION_TOKEN": {
-      "description": "The number of processes to run.",
       "value": "<rando>"
     },
     "SLACK_OAUTH_STATE": {
