@@ -1,5 +1,7 @@
 # taptapboom.audio
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ScionOfBytes/taptapboom.audio.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/ScionOfBytes/taptapboom.audio.svg?branch=master)](https://travis-ci.org/Nwinworks/taptapboom.audio)
 [![Coverage Status](https://coveralls.io/repos/github/ScionOfBytes/taptapboom.audio/badge.svg?branch=master)](https://coveralls.io/github/Nwinworks/taptapboom.audio?branch=master)
 
